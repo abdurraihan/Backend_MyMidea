@@ -1,4 +1,4 @@
-import express from express;
+import express from "express";
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
 import cors from "cors";
@@ -40,3 +40,15 @@ const storage = multer.diskStorage({
 
 const upload = multer({storage});
 
+
+
+/* mongoose setup */
+
+const PORT = process.env.PORT || 7000 ;
+
+mongoose.connect(process.env.MONGO_URL , {
+    useNewUrlParser:true,
+    useUnifiedTopology:true,
+}).then(()=>{
+    app.listen(PORT , ()=> console.log(`connect DB and server running on post: ${PORT}`));
+}).catch((error)=>console.log(`${error} did not connect`));
