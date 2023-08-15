@@ -8,6 +8,8 @@ import helmet from "helmet";
 import morgan from "morgan";
 import path from "path";
 import { fileURLToPath } from "url";
+import authRoutes from "./routes/auth.js";
+import {register} from "./controllers/auth.js";
 
 
 /* configuration */
@@ -40,7 +42,20 @@ const storage = multer.diskStorage({
 
 const upload = multer({storage});
 
+/* routers with file */
 
+app.post("/auth/register" ,upload.single("picture") , register);
+
+/* routes */
+
+app.use("/auth", authRoutes);
+
+
+/* initial route */
+
+app.get('/', (req,res)=>{
+    res.send("server of MyMidea is running");
+})
 
 /* mongoose setup */
 
@@ -52,3 +67,4 @@ mongoose.connect(process.env.MONGO_URL , {
 }).then(()=>{
     app.listen(PORT , ()=> console.log(`connect DB and server running on post: ${PORT}`));
 }).catch((error)=>console.log(`${error} did not connect`));
+
